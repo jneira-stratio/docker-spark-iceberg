@@ -25,6 +25,12 @@ docker exec -it spark-iceberg spark-sql
 docker exec -it spark-iceberg pyspark
 ```
 
+To use a s3 bucket path as warehouse you can run:
+
+```
+docker compose exec -it spark-iceberg spark-sql --packages org.apache.hadoop:hadoop-aws:3.2.0,com.amazonaws:aws-java-sdk-bundle:1.11.901 --conf spark.hadoop.fs.s3a.access.key=$S3_ACCESS_KEY --conf spark.hadoop.fs.s3a.secret.key=$S·_SCRET_KEY --conf spark.sql.catalog.local.warehouse=s3a://connectors-it-bucket-1/poc_iceberg/warehouse-v0-12-1
+```
+
 To stop everything, just run `docker-compose down`.
 
 ## Troubleshooting & Maintenance
@@ -60,6 +66,6 @@ docker buildx build -t tabulario/spark-iceberg --platform=linux/amd64,linux/arm6
 ---
 
 For more information on getting started with using Iceberg, checkout
-the [Getting Started](https://iceberg.apache.org/getting-started/) guide in the official docs.
+the [Getting Started](https://web.archive.org/web/20220929084729/https://iceberg.apache.org/docs/0.12.1/getting-started/) guide in the official docs.
 
 The repository for the docker image is [located on dockerhub](https://hub.docker.com/r/tabulario/spark-iceberg).
