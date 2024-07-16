@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 FROM python:3.9-bullseye
 
-RUN apt-get update && \
+RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
       sudo \
       curl \
@@ -37,9 +37,9 @@ RUN mkdir -p ${HADOOP_HOME} && mkdir -p ${SPARK_HOME}
 WORKDIR ${SPARK_HOME}
 
 # Download spark
-RUN curl https://archive.apache.org/dist/spark/spark-3.2.1/spark-3.2.1-bin-hadoop3.2.tgz -o spark-3.2.1-bin-hadoop3.2.tgz \
- && tar xvzf spark-3.2.1-bin-hadoop3.2.tgz --directory /opt/spark --strip-components 1 \
- && rm -rf spark-3.2.1-bin-hadoop3.2.tgz
+RUN curl https://archive.apache.org/dist/spark/spark-3.1.3/spark-3.1.3-bin-hadoop3.2.tgz -o spark-3.1.3-bin-hadoop3.2.tgz \
+ && tar xvzf spark-3.1.3-bin-hadoop3.2.tgz --directory /opt/spark --strip-components 1 \
+ && rm -rf spark-3.1.3-bin-hadoop3.2.tgz
 
 # Download postgres connector jar
 RUN curl https://jdbc.postgresql.org/download/postgresql-42.2.24.jar -o postgresql-42.2.24.jar \
@@ -47,8 +47,8 @@ RUN curl https://jdbc.postgresql.org/download/postgresql-42.2.24.jar -o postgres
  && rm postgresql-42.2.24.jar
 
 # Download iceberg spark runtime
-RUN curl https://search.maven.org/remotecontent?filepath=org/apache/iceberg/iceberg-spark-runtime-3.2_2.12/0.13.1/iceberg-spark-runtime-3.2_2.12-0.13.1.jar -Lo iceberg-spark-runtime-3.2_2.12-0.13.1.jar \
- && mv iceberg-spark-runtime-3.2_2.12-0.13.1.jar /opt/spark/jars
+RUN curl https://search.maven.org/remotecontent?filepath=org/apache/iceberg/iceberg-spark-runtime/0.12.1/iceberg-spark-runtime-0.12.1.jar -Lo iceberg-spark-runtime-0.12.1.jar \
+ && mv iceberg-spark-runtime-0.12.1.jar /opt/spark/jars
 
 # Download Java AWS SDK
 RUN curl https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.17.165/bundle-2.17.165.jar -Lo bundle-2.17.165.jar \
