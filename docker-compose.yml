@@ -19,7 +19,7 @@ version: "3"
 
 services:
   spark-iceberg:
-    image: tabulario/spark-iceberg:3.1.2_1.3.1
+    image: spark-iceberg:3.1.2_1.3.1
     container_name: spark-iceberg
     build: spark/
     networks:
@@ -39,6 +39,19 @@ services:
       - 8080:8080
       - 10000:10000
       - 10001:10001
+  # for hive metastore with postgres db
+  postgres:
+    image: postgres:13.4-bullseye
+    networks:
+      iceberg_net:
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=metastore
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
   rest:
     image: tabulario/iceberg-rest
     container_name: iceberg-rest
