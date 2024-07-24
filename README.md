@@ -55,6 +55,27 @@ docker compose exec -it spark-iceberg spark-sql \
   --conf spark.sql.catalog.local.warehouse=s3a://connectors-it-bucket-1/poc_iceberg/warehouse-v1-3-1
 ```
 
+To use hive spark catalog using postgres as db as default:
+
+WARNING: this is a WIP, creating iceberg tables fails
+
+```
+docker compose exec -it spark-iceberg spark-sql \
+  --conf spark.sql.defaultCatalog=spark_catalog \
+  --conf spark.sql.catalog.spark_catalog=org.apache.iceberg.spark.SparkSessionCatalog \
+  --conf spark.sql.catalog.spark_catalog.type=hive \
+  --conf spark.sql.catalogImplementation=hive \
+  --conf spark.hadoop.javax.jdo.option.ConnectionURL=jdbc:postgresql://postgres:5432/metastore \
+  --conf spark.hadoop.javax.jdo.option.ConnectionDriverName=org.postgresql.Driver \
+  --conf spark.hadoop.javax.jdo.option.ConnectionUserName=admin \
+  --conf spark.hadoop.javax.jdo.option.ConnectionPassword=password \
+  --conf spark.hadoop.datanucleus.schema.autoCreateTables=true \
+  --conf spark.hadoop.hive.metastore.schema.verification=false \
+  --conf spark.hadoop.hive.txn.manager=org.apache.hadoop.hive.ql.lockmgr.DummyTxnManager \
+  --conf spark.hadoop.hive.txn.strict.locking.mode=false \
+  --conf spark.hadoop.hive.lock.numretries=1
+```
+
 To stop everything, just run `docker-compose down`.
 
 ## Troubleshooting & Maintenance
